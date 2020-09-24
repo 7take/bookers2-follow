@@ -8,12 +8,12 @@ resources :books, only: [:create, :index, :show, :destroy, :edit, :update ]
 
 devise_for :users
 
-resources :users, only: [:show,:index,:edit,:update]
+resources :users, only: [:show,:index,:edit,:update] do
+	resource :relationships, only: [:create, :destroy]
+	get 'follows' => 'relationships#follower', as: 'follows'
+	get 'followers' => 'relationships#followed', as: 'followers'
+end
 
-post 'follow/:id' => 'relationships#follow', as: 'follow' #フォローする
-post 'unfollow/:id' => 'relationships#unfollow', as: 'unfollow' #フォロー外す
 resources :users, only: :show
-resources :followings
-resources :followers
 
 end
