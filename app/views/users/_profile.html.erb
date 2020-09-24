@@ -11,11 +11,28 @@
 				<th>introduction</th>
 				<th><%= user.introduction %></th>
 			</tr>
+			<tr>
+				<th>follows</th>
+				<th><%= link_to "#{user.follower.count}", followings_path %></th>
+			</tr>
+			<tr>
+				<th>followers</th>
+				<th><%= link_to "#{user.followed.count}", followers_path %></th>
+			</tr>
+
+				<% if user_signed_in? && current_user != @user %>
+				<% if current_user.following?(user) %>
+			<tr>
+				<th><%= link_to 'フォロー外す', unfollow_path(user.id), method: :POST %></th>
+				<% else %>
+				<th><%= link_to 'フォローする', follow_path(user.id),method: :POST %></th>
+				<% end %>
+				<% end %>
 		</table>
 
 		<div class="row">
+			<% if user_signed_in? && current_user == @user %>
 			<%= link_to '', edit_user_path(user), class: "col-xs-12 btn btn-default glyphicon glyphicon-wrench edit_user_#{user.id}" %>
+			<% end %>
 		</div>
 	</div>
-
-<!-- このページのuserの前に全て@マークを付けましたがうまくいきませんでした。 -->

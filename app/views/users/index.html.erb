@@ -7,6 +7,7 @@
 				<%= render 'books/newform', book: @book %>
 		</div>
 		<div class="col-xs-9">
+
 			<h2>Users</h2>
 <!--users一覧 -->
 				<table class="table">
@@ -22,9 +23,21 @@
 						<tr>
 							<td><%= attachment_image_tag(user, :profile_image, :fill, 50, 50, fallback: "no-image-mini.jpg") %></td>
 							<td><%= user.name %></td>
+
+							<td><%= "フォロー数: #{@user.follower.count}" %></td>
+							<td><%= "フォロワー数: #{@user.followed.count}" %></td>
+
+								<% if user_signed_in? && user != @user %>
+								<% if current_user.following?(user) %>
+							<td><%= link_to 'フォロー外す', unfollow_path(user.id), method: :POST %></td>
+								<% else %>
+							<td><%= link_to 'フォローする', follow_path(user.id),method: :POST %></td>
+								<% end %>
+								<% end %>
+							</td>
 							<td><%= link_to "Show", user_path(user), class: "user_#{user.id}" %></td>
 						</tr>
-					<% end %>
+						<% end %>
 				</tbody>
 				</table>
 <!--users一覧 -->
